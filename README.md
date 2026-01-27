@@ -1,45 +1,90 @@
-Overview 
-We aim to build an AI-assisted platform that helps companies identify and analyze potential 
-customers. The system will work with both structured data, such as tables, spreadsheets, and 
-databases, and unstructured data, such as text, notes, descriptions, and messages. By 
-combining these data sources, the platform will extract meaningful patterns from customer 
-information and interpret them to produce clear and actionable insights. 
-The platform is designed to support a range of customer analysis tasks. For example, it can 
-assist with customer discovery by identifying new potential customers, customer segmentation 
-by grouping customers into meaningful categories, and customer prioritization by estimating 
-which customers are most likely to generate high revenue. Together, these functions help 
-companies better understand their customer base and make informed decisions. 
-In addition, the system will be reusable and industry-agnostic. This means it will not be limited 
-to a single business domain but can be applied across different fields. Since this project is 
-developed as an open-source platform, others will be able to reuse, extend, and contribute to it 
-in the future. 
-Semester-Specific Goals / User Stories 
-1. The system should be able to take in customer data files (e.g., Excel or CSV) and clean 
-and organize them for analysis. 
-2. The system should be able to group customers into types based on behavior and 
-demographic information. 
-3. The system should be able to estimate or predict which customers are likely to convert 
-or generate high revenue using machine learning models. 
-4. The system should present results through clear charts and simple visualizations. 
-Milestones 
-Month 1:  
-1. Set up GitHub repository and development workflow 
-2. Design customer data schema and generate sample datasets 
-3. Perform exploratory data analysis (EDA) 
-4. Implement data cleaning and data preparation pipelines 
-Month 2:  
-1. Implement customer segmentation using clustering algorithms (e.g., K-Means) 
-2. Test and evaluate segmentation results 
-3. Generate descriptive profiles for customer groups 
-4. Begin research on customer prediction models 
-Month 3:  
-1. Implement predictive models (e.g., logistic regression, random forest) 
-2. Test and evaluate models using standard performance metrics 
-3. Integrate data ingestion, modeling, and output pipelines 
-4. Begin development of dashboards and visualizations 
-Month 4:  
-1. Implement dashboards and visualizations 
-2. Perform overall functionality and performance testing 
-3. Finalize documentation, including README and usage instructions 
-4. Prepare example datasets and demo workflows 
-5. Create final presentation slides and demo materials 
+
+## Overview
+
+This project aims to build an **AI-assisted platform** that helps companies identify and analyze potential customers. The system works with both:
+
+- **Structured data** — tables, spreadsheets, CSV files, databases  
+- **Unstructured data** — text, notes, descriptions, and messages  
+
+By combining these data sources, the platform extracts meaningful patterns from customer information and produces **clear, actionable insights** to support business decision-making.
+
+The platform supports multiple customer analysis tasks, including:
+
+- **Customer Discovery** — identifying new potential customers  
+- **Customer Segmentation** — grouping customers into meaningful categories  
+- **Customer Prioritization** — predicting which customers are most likely to convert or generate high revenue  
+
+Additionally, the system is designed to be:
+
+- **Reusable** — adaptable to different datasets  
+- **Industry-agnostic** — not limited to a single business domain  
+- **Open-source** — others can reuse, extend, and contribute to the project  
+
+---
+
+## Semester-Specific Goals / User Stories
+
+1. The system can take customer data files (CSV or Excel) and clean and organize them for analysis.  
+2. The system can group customers into types based on behavioral and demographic information.  
+3. The system can estimate or predict which customers are likely to convert or generate high revenue using machine learning models.  
+4. The system presents results through clear charts and simple visualizations.
+
+---
+
+## Project Milestones
+
+### Month 1 — Data Setup & Preparation
+- Set up GitHub repository and development workflow  
+- Design customer data schema and generate sample datasets  
+- Perform exploratory data analysis (EDA)  
+- Implement data cleaning and data preparation pipelines  
+
+### Month 2 — Customer Segmentation
+- Implement customer segmentation using clustering algorithms (e.g., K-Means)  
+- Test and evaluate segmentation results  
+- Generate descriptive profiles for customer groups  
+- Begin research on customer prediction models  
+
+### Month 3 — Predictive Modeling & Integration
+- Implement predictive models (e.g., Logistic Regression, Random Forest)  
+- Test and evaluate models using standard performance metrics  
+- Integrate data ingestion, modeling, and output pipelines  
+- Begin development of dashboards and visualizations  
+
+### Month 4 — Visualization & Finalization
+- Implement dashboards and visualizations  
+- Perform overall functionality and performance testing  
+- Finalize documentation, including README and usage instructions  
+- Prepare example datasets and demo workflows  
+- Create final presentation slides and demo materials  
+
+---
+
+## Tech Stack (Planned)
+
+- Python  
+- Pandas / NumPy  
+- Scikit-learn  
+- Matplotlib / Seaborn / Plotly  
+- Jupyter Notebook  
+- Git & GitHub  
+
+---
+
+## Expected Deliverables
+
+- Data ingestion and cleaning pipeline  
+- Customer segmentation module  
+- Customer prediction models  
+- Visualization dashboards  
+- Example datasets and demo workflow  
+- Full documentation  
+
+---
+
+## Future Extensions
+
+- Support for unstructured text analysis (NLP, embeddings)  
+- Advanced deep learning models  
+- Web-based interactive dashboards  
+- Plug-and-play dataset connectors  
