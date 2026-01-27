@@ -60,17 +60,6 @@ Additionally, the system is designed to be:
 
 ---
 
-## Tech Stack (Planned)
-
-- Python  
-- Pandas / NumPy  
-- Scikit-learn  
-- Matplotlib / Seaborn / Plotly  
-- Jupyter Notebook  
-- Git & GitHub  
-
----
-
 ## Expected Deliverables
 
 - Data ingestion and cleaning pipeline  
@@ -80,11 +69,4 @@ Additionally, the system is designed to be:
 - Example datasets and demo workflow  
 - Full documentation  
 
----
 
-## Future Extensions
-
-- Support for unstructured text analysis (NLP, embeddings)  
-- Advanced deep learning models  
-- Web-based interactive dashboards  
-- Plug-and-play dataset connectors  
