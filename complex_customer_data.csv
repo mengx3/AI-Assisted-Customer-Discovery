@@ -1,0 +1,206 @@
+customer_id,age,income,past_purchases,region,channel,membership_years,avg_order_value,last_login_days_ago,notes,converted
+CUST_1000,63.0,81485.02,7,South,organic,5,129.36,280,Frequent returns,1
+CUST_1001,20.0,62520.59,7,South,ads,8,144.97,10,Frequent returns,1
+CUST_1002,46.0,88051.37,3,South,partner,3,152.48,143,Frequent returns,1
+CUST_1003,52.0,22552.8,4,West,partner,7,39.11,63,Frequent returns,1
+CUST_1004,56.0,89806.62,4,South,organic,6,83.23,294,,1
+CUST_1005,35.0,136957.6,5,,referral,6,163.29,310,VIP client,1
+CUST_1006,37.0,71384.35,3,North,ads,1,111.98,256,Frequent returns,0
+CUST_1007,60.0,72853.55,4,East,ads,8,96.67,42,High engagement,1
+CUST_1008,40.0,76488.74,4,East,referral,8,72.64,9,Frequent returns,1
+CUST_1009,51.0,25450.61,9,West,referral,6,163.22,138,High engagement,1
+CUST_1010,,,2,West,referral,5,,263,High engagement,1
+CUST_1011,67.0,31864.76,4,East,email,8,123.19,282,VIP client,1
+CUST_1012,65.0,61308.01,6,,organic,5,123.11,235,Frequent returns,1
+CUST_1013,27.0,103071.74,5,North,partner,0,155.09,146,Late payer,1
+CUST_1014,50.0,53619.58,5,,email,2,87.78,281,VIP client,0
+CUST_1015,64.0,84531.22,4,East,partner,1,86.51,124,,1
+CUST_1016,50.0,97318.48,6,East,ads,2,144.42,355,High engagement,1
+CUST_1017,65.0,78968.52,6,North,ads,8,83.91,225,Frequent returns,1
+CUST_1018,43.0,37726.29,3,North,ads,9,162.08,18,High engagement,0
+CUST_1019,37.0,63688.12,4,West,email,4,183.04,324,Late payer,1
+CUST_1020,32.0,120985.28,4,West,ads,7,53.17,79,,1
+CUST_1021,54.0,21373.86,4,,partner,0,115.2,116,Frequent returns,1
+CUST_1022,50.0,65105.35,8,East,partner,8,109.78,343,Frequent returns,1
+CUST_1023,34.0,58197.3,9,,referral,8,65.82,94,Late payer,1
+CUST_1024,22.0,75018.68,7,West,ads,9,178.42,249,High engagement,1
+CUST_1025,67.0,90705.39,4,South,partner,3,157.82,52,Frequent returns,1
+CUST_1026,73.0,112217.27,3,North,ads,7,137.5,22,VIP client,1
+CUST_1027,21.0,65244.19,5,East,organic,8,105.81,258,High engagement,1
+CUST_1028,20.0,92308.53,7,East,email,9,139.19,90,VIP client,1
+CUST_1029,,,5,South,organic,6,,246,,1
+CUST_1030,57.0,83858.68,4,East,referral,3,120.09,348,,1
+CUST_1031,20.0,57901.9,4,East,organic,8,181.27,348,High engagement,1
+CUST_1032,38.0,47066.96,5,South,ads,7,122.75,327,High engagement,0
+CUST_1033,65.0,44498.92,5,West,partner,0,73.27,238,VIP client,0
+CUST_1034,74.0,53089.07,13,North,email,5,93.48,333,VIP client,1
+CUST_1035,66.0,80042.16,6,West,referral,8,136.76,152,VIP client,1
+CUST_1036,25.0,91023.73,4,South,referral,9,105.54,125,VIP client,1
+CUST_1037,59.0,80086.72,5,,email,4,145.73,69,,1
+CUST_1038,53.0,58276.12,4,North,partner,1,23.49,262,Late payer,0
+CUST_1039,46.0,117149.25,4,,referral,4,68.24,335,,1
+CUST_1040,70.0,109971.64,4,East,partner,5,105.76,49,Frequent returns,1
+CUST_1041,56.0,63150.0,9,North,referral,4,49.27,217,,1
+CUST_1042,51.0,51414.21,6,,partner,0,119.21,293,,0
+CUST_1043,39.0,75255.37,7,,ads,6,184.65,56,,1
+CUST_1044,72.0,103682.47,6,,referral,4,106.46,149,,1
+CUST_1045,48.0,80319.12,4,East,organic,2,151.16,295,High engagement,1
+CUST_1046,45.0,85913.72,7,North,referral,8,122.66,349,,1
+CUST_1047,52.0,66698.0,6,West,partner,3,165.29,27,Frequent returns,1
+CUST_1048,51.0,83406.77,7,East,email,7,101.89,269,High engagement,1
+CUST_1049,30.0,110613.61,4,North,email,2,146.19,48,High engagement,1
+CUST_1050,58.0,66008.28,5,,partner,4,24.97,63,High engagement,1
+CUST_1051,21.0,75582.69,8,South,ads,5,91.7,278,Frequent returns,1
+CUST_1052,60.0,78345.41,3,South,organic,1,158.2,69,High engagement,1
+CUST_1053,23.0,79093.13,5,East,referral,3,173.67,241,,1
+CUST_1054,,,6,West,referral,5,,144,Late payer,1
+CUST_1055,29.0,25078.28,2,West,partner,5,71.24,178,Frequent returns,1
+CUST_1056,52.0,46508.62,6,North,referral,1,150.23,301,,0
+CUST_1057,28.0,76198.56,5,South,partner,7,149.72,318,VIP client,1
+CUST_1058,40.0,85846.4,5,,partner,4,110.79,289,High engagement,1
+CUST_1059,31.0,58733.14,11,West,partner,3,143.77,69,Late payer,1
+CUST_1060,36.0,106431.44,5,West,email,3,76.34,121,VIP client,1
+CUST_1061,54.0,68420.6,9,South,referral,4,112.25,311,VIP client,1
+CUST_1062,33.0,72507.9,5,,email,5,66.94,322,VIP client,1
+CUST_1063,61.0,67150.9,7,North,partner,8,105.55,50,VIP client,1
+CUST_1064,45.0,75350.67,2,North,partner,2,127.28,232,VIP client,0
+CUST_1065,62.0,89611.85,6,North,partner,3,161.15,106,VIP client,1
+CUST_1066,48.0,88641.34,4,North,referral,0,131.61,66,VIP client,1
+CUST_1067,70.0,49539.43,5,South,email,4,104.94,100,High engagement,1
+CUST_1068,24.0,110091.59,3,North,referral,9,134.26,136,Late payer,1
+CUST_1069,63.0,44624.34,6,South,organic,8,101.81,207,VIP client,1
+CUST_1070,69.0,73980.68,3,West,organic,0,106.95,58,VIP client,1
+CUST_1071,44.0,65140.09,4,South,organic,9,40.48,253,High engagement,1
+CUST_1072,34.0,45775.21,6,East,organic,8,72.85,297,High engagement,0
+CUST_1073,24.0,70121.99,7,East,partner,0,102.75,221,High engagement,1
+CUST_1074,32.0,53479.66,9,West,email,2,69.38,139,VIP client,1
+CUST_1075,70.0,73822.68,1,,ads,1,139.3,35,Late payer,1
+CUST_1076,57.0,82077.15,6,East,ads,6,190.18,291,High engagement,1
+CUST_1077,29.0,108798.23,8,South,organic,7,150.16,210,Late payer,1
+CUST_1078,72.0,79684.61,5,West,email,7,139.17,244,High engagement,1
+CUST_1079,25.0,56719.37,3,,referral,6,84.26,71,Frequent returns,1
+CUST_1080,19.0,62209.5,7,East,referral,7,89.75,178,Late payer,1
+CUST_1081,61.0,75499.45,9,,organic,7,155.58,115,VIP client,1
+CUST_1082,55.0,74336.52,2,North,organic,8,147.15,354,High engagement,1
+CUST_1083,73.0,108489.73,3,North,referral,9,91.09,336,Frequent returns,1
+CUST_1084,43.0,106883.82,5,North,ads,7,161.25,63,High engagement,1
+CUST_1085,,,12,East,ads,0,,183,,1
+CUST_1086,38.0,58283.95,2,,partner,1,40.2,286,Frequent returns,1
+CUST_1087,74.0,8073.63,3,East,ads,4,82.3,70,Frequent returns,0
+CUST_1088,67.0,58276.99,3,,referral,0,127.91,103,Frequent returns,0
+CUST_1089,30.0,47548.56,3,South,organic,3,117.76,185,,0
+CUST_1090,36.0,63129.39,3,South,referral,3,101.24,205,Frequent returns,1
+CUST_1091,35.0,81789.61,1,East,referral,3,140.32,88,High engagement,0
+CUST_1092,19.0,76429.81,9,,partner,9,198.39,207,,1
+CUST_1093,69.0,71250.8,3,South,ads,5,170.24,233,High engagement,1
+CUST_1094,62.0,76989.55,6,,ads,5,136.39,178,,0
+CUST_1095,71.0,68847.06,6,South,referral,4,107.8,225,Frequent returns,1
+CUST_1096,59.0,76925.47,6,,partner,6,129.19,14,,1
+CUST_1097,66.0,-8776.38,2,East,referral,3,122.68,323,VIP client,0
+CUST_1098,74.0,65267.66,4,East,email,9,131.94,140,Frequent returns,1
+CUST_1099,45.0,69228.73,4,West,email,2,137.75,343,Frequent returns,1
+CUST_1100,67.0,63468.46,3,South,ads,1,120.75,183,High engagement,1
+CUST_1101,40.0,66551.34,5,North,referral,9,193.21,244,VIP client,1
+CUST_1102,21.0,89582.75,0,West,ads,4,115.45,149,Late payer,1
+CUST_1103,21.0,57047.37,3,North,email,0,127.83,161,Frequent returns,1
+CUST_1104,29.0,127017.55,3,South,email,6,110.39,333,Frequent returns,1
+CUST_1105,39.0,89207.42,4,East,referral,8,141.84,133,VIP client,1
+CUST_1106,43.0,71842.32,4,North,partner,1,134.33,352,Late payer,1
+CUST_1107,57.0,66833.44,1,East,ads,2,155.64,93,Late payer,1
+CUST_1108,59.0,69836.94,8,West,referral,1,90.23,277,Frequent returns,1
+CUST_1109,52.0,49117.32,4,West,email,4,126.19,44,,0
+CUST_1110,21.0,69619.94,4,East,ads,9,137.36,53,,1
+CUST_1111,29.0,78967.09,5,,organic,1,159.44,284,High engagement,1
+CUST_1112,,,5,South,ads,4,,318,High engagement,1
+CUST_1113,69.0,86492.24,1,,partner,6,52.43,8,VIP client,1
+CUST_1114,74.0,65128.06,4,West,referral,6,94.21,342,,1
+CUST_1115,48.0,36597.94,2,South,referral,0,143.06,342,High engagement,0
+CUST_1116,24.0,55272.43,5,,partner,9,144.97,335,Frequent returns,1
+CUST_1117,27.0,112304.83,4,North,ads,1,151.47,103,Late payer,1
+CUST_1118,41.0,94401.46,1,,ads,2,176.93,14,Frequent returns,0
+CUST_1119,32.0,81240.49,7,East,email,8,131.57,202,Late payer,1
+CUST_1120,56.0,52967.64,3,North,ads,7,165.63,140,High engagement,1
+CUST_1121,37.0,72091.13,4,East,organic,0,202.16,295,VIP client,1
+CUST_1122,24.0,40608.28,4,North,partner,4,122.37,30,VIP client,1
+CUST_1123,30.0,58201.58,2,West,email,3,135.57,58,Late payer,0
+CUST_1124,72.0,65869.92,4,South,referral,5,-5.85,29,High engagement,1
+CUST_1125,45.0,62959.0,3,North,partner,4,158.18,300,Late payer,1
+CUST_1126,56.0,95915.05,5,West,referral,7,205.42,48,Frequent returns,1
+CUST_1127,35.0,36531.85,5,West,partner,4,56.5,62,VIP client,1
+CUST_1128,64.0,50364.19,3,South,referral,0,111.77,203,High engagement,1
+CUST_1129,28.0,37632.8,6,South,referral,7,125.1,330,Frequent returns,1
+CUST_1130,53.0,41066.17,5,North,email,3,153.64,252,Late payer,0
+CUST_1131,70.0,75101.4,10,West,ads,8,159.49,314,VIP client,1
+CUST_1132,53.0,31988.99,4,West,ads,9,105.63,254,High engagement,0
+CUST_1133,19.0,90846.72,2,South,partner,5,100.48,186,Frequent returns,1
+CUST_1134,65.0,65829.61,8,East,email,9,79.97,246,Late payer,1
+CUST_1135,63.0,73719.71,2,South,ads,2,112.58,265,VIP client,1
+CUST_1136,34.0,80064.42,0,East,referral,3,150.06,321,,0
+CUST_1137,23.0,61145.84,2,East,partner,3,180.72,160,Frequent returns,0
+CUST_1138,58.0,97811.99,1,,ads,4,81.94,234,,1
+CUST_1139,63.0,67141.43,2,East,organic,9,136.96,181,VIP client,1
+CUST_1140,40.0,86851.76,4,South,ads,7,191.01,122,VIP client,1
+CUST_1141,64.0,67022.19,2,North,referral,1,126.64,158,VIP client,1
+CUST_1142,33.0,79271.86,2,West,email,8,86.55,132,Frequent returns,1
+CUST_1143,58.0,78991.57,5,South,partner,1,108.78,234,VIP client,1
+CUST_1144,43.0,78249.25,6,North,referral,6,125.68,303,High engagement,1
+CUST_1145,63.0,47642.3,8,East,referral,0,188.66,346,VIP client,1
+CUST_1146,67.0,82896.89,3,,organic,0,119.22,358,High engagement,1
+CUST_1147,18.0,64026.08,6,South,referral,0,92.85,194,,1
+CUST_1148,53.0,87762.2,6,West,organic,9,180.19,276,High engagement,1
+CUST_1149,47.0,18187.66,9,East,referral,7,120.35,187,Late payer,1
+CUST_1150,19.0,35372.09,6,,ads,3,4.93,261,VIP client,0
+CUST_1151,37.0,81086.14,1,,partner,4,93.02,240,Late payer,1
+CUST_1152,22.0,118573.19,5,East,email,4,72.31,176,High engagement,1
+CUST_1153,48.0,92876.47,2,South,organic,8,158.37,363,Late payer,1
+CUST_1154,25.0,54938.73,4,East,email,3,91.1,30,Late payer,1
+CUST_1155,47.0,29698.69,7,East,partner,6,140.11,294,Frequent returns,1
+CUST_1156,56.0,90567.16,5,South,organic,1,93.69,81,Frequent returns,1
+CUST_1157,19.0,69985.42,9,North,referral,1,134.58,191,High engagement,1
+CUST_1158,70.0,86767.61,4,East,organic,6,139.75,280,High engagement,1
+CUST_1159,30.0,74882.47,4,South,email,4,134.05,312,VIP client,1
+CUST_1160,21.0,72741.07,6,East,partner,8,123.54,339,,1
+CUST_1161,62.0,145965.64,7,East,referral,9,131.51,98,High engagement,1
+CUST_1162,69.0,71846.75,4,West,ads,3,112.98,124,Late payer,0
+CUST_1163,25.0,68018.87,7,West,referral,3,110.62,302,High engagement,1
+CUST_1164,56.0,68963.78,2,East,referral,9,142.06,119,VIP client,1
+CUST_1165,42.0,57411.58,2,West,ads,3,103.3,307,Late payer,0
+CUST_1166,24.0,96753.32,2,East,referral,6,153.72,274,Late payer,1
+CUST_1167,31.0,63156.14,6,South,referral,6,106.84,306,Late payer,1
+CUST_1168,46.0,87898.57,6,East,email,4,87.27,45,High engagement,1
+CUST_1169,62.0,79115.08,11,East,ads,6,153.23,82,High engagement,1
+CUST_1170,38.0,102474.65,3,South,organic,9,154.12,0,VIP client,1
+CUST_1171,54.0,82504.49,3,North,referral,7,114.39,305,Frequent returns,1
+CUST_1172,73.0,41665.38,4,East,referral,8,189.74,214,,0
+CUST_1173,66.0,38837.81,5,East,email,0,196.65,227,VIP client,0
+CUST_1174,50.0,107209.23,5,,referral,7,133.68,231,,1
+CUST_1175,58.0,56782.23,5,South,email,1,118.33,199,Late payer,1
+CUST_1176,42.0,38984.94,7,North,email,5,131.5,192,VIP client,1
+CUST_1177,70.0,55259.54,7,East,referral,7,112.15,228,Frequent returns,1
+CUST_1178,63.0,103615.63,4,East,referral,7,113.23,337,High engagement,1
+CUST_1179,31.0,36494.68,7,South,referral,7,63.49,161,Late payer,0
+CUST_1180,26.0,50337.62,5,North,ads,0,105.26,204,,0
+CUST_1181,32.0,55329.81,6,North,partner,1,177.25,64,Late payer,1
+CUST_1182,,,2,,partner,9,,104,Late payer,0
+CUST_1183,19.0,42391.82,5,South,email,4,106.0,209,VIP client,1
+CUST_1184,48.0,34047.3,6,East,ads,1,42.67,242,High engagement,1
+CUST_1185,24.0,60470.31,5,West,ads,1,181.81,270,VIP client,1
+CUST_1186,58.0,63127.28,9,South,organic,8,166.15,314,High engagement,1
+CUST_1187,73.0,54936.55,1,,organic,6,135.9,133,VIP client,1
+CUST_1188,28.0,30657.55,3,North,partner,6,79.7,88,High engagement,0
+CUST_1189,30.0,103333.4,5,,ads,7,97.42,86,Frequent returns,1
+CUST_1190,30.0,38773.03,5,East,referral,6,98.53,98,High engagement,1
+CUST_1191,43.0,78950.84,4,East,email,9,70.29,312,Frequent returns,1
+CUST_1192,60.0,45130.84,6,North,organic,1,113.95,349,VIP client,0
+CUST_1193,,,4,North,referral,2,,339,High engagement,0
+CUST_1194,25.0,95895.81,4,East,email,6,120.61,169,Frequent returns,1
+CUST_1195,31.0,50059.66,5,West,ads,5,134.02,50,,0
+CUST_1196,62.0,23907.11,5,North,organic,1,106.38,200,Frequent returns,0
+CUST_1197,19.0,89394.68,9,South,organic,0,98.82,62,Frequent returns,1
+CUST_1198,73.0,118895.01,6,,partner,1,175.58,140,VIP client,1
+CUST_1199,,,4,,organic,2,,153,Late payer,1
+CUST_1040,70.0,109971.64,4,East,partner,5,105.76,49,Frequent returns,1
+CUST_1051,21.0,75582.69,8,South,ads,5,91.7,278,Frequent returns,1
+CUST_1139,63.0,67141.43,2,East,organic,9,136.96,181,VIP client,1
+CUST_1197,19.0,89394.68,9,South,organic,0,98.82,62,Frequent returns,1
+CUST_1170,38.0,102474.65,3,South,organic,9,154.12,0,VIP client,1

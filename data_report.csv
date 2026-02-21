@@ -1,0 +1,12 @@
+,dtype,missing_%,unique_count,min,median,max
+region,str,17.5,4,,,
+notes,str,15.0,4,,,
+age,float64,4.0,55,18.0,47.0,74.0
+avg_order_value,float64,4.0,191,-5.85,122.93,205.42
+income,float64,4.0,192,-8776.38,70686.395,145965.64
+customer_id,str,0.0,200,,,
+past_purchases,int64,0.0,14,0.0,5.0,13.0
+membership_years,int64,0.0,10,0.0,5.0,9.0
+channel,str,0.0,5,,,
+last_login_days_ago,int64,0.0,160,0.0,203.5,363.0
+converted,int64,0.0,2,0.0,1.0,1.0
