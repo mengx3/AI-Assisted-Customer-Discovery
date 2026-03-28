@@ -1,6 +1,7 @@
 # main.py
 import pandas as pd
 import numpy as np
+
 from sklearn.cluster import KMeans
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
@@ -24,7 +25,7 @@ ID_COL          = "customer_id"
 N_CLUSTERS      = None   # Set to an int to override auto-selection, e.g. N_CLUSTERS = 4
 
 
-# Helpers 
+# Helpers
 
 def choose_k(X_scaled: np.ndarray, max_k: int = 8) -> int:
     """
@@ -57,6 +58,11 @@ def choose_k(X_scaled: np.ndarray, max_k: int = 8) -> int:
 def run_clustering(clean_df: pd.DataFrame, k: int | None = None) -> tuple[pd.DataFrame, int]:
     """
     Run K-Means on the numeric columns of clean_df.
+
+    Returns
+    -------
+    df_with_clusters : original clean_df with a new 'cluster' column appended
+    k                : number of clusters actually used
     """
     # Only use numeric columns for clustering (exclude ID)
     numeric_cols = [
@@ -101,13 +107,14 @@ def run_clustering(clean_df: pd.DataFrame, k: int | None = None) -> tuple[pd.Dat
     return df_with_clusters, k
 
 
-
+# Main 
 
 def main():
     # 1. Load 
     loader = DataLoader(INPUT_FILE)
-    df = loader.load_csv()
+    df = loader.load()                  # auto-detects format, encoding, delimiter
 
+    print("\n" + loader.summary())
     print("\nOriginal Data (head):")
     print(df.head())
 
@@ -128,8 +135,9 @@ def main():
     report_df.to_csv(REPORT_OUTPUT)
     print(f"\nSaved report → {REPORT_OUTPUT}")
 
-    # 4. Clean
+    # 4. Clean 
     clean_df = cleaner.clean()
+    print("\n" + cleaner.cleaning_summary())
 
     print("\nCleaned Data (head):")
     print(clean_df.head())
