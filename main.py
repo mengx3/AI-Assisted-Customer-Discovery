@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 from sklearn.cluster import KMeans
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, StratifiedKFold, cross_validate
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
@@ -23,9 +23,10 @@ CLUSTER_OUTPUT  = "clustered_customer_data.csv"
 TARGET_COL      = "converted"
 ID_COL          = "customer_id"
 N_CLUSTERS      = None   # Set to an int to override auto-selection, e.g. N_CLUSTERS = 4
+CV_FOLDS        = 5      # Number of cross-validation folds
 
 
-# Helpers
+# Helpers 
 
 def choose_k(X_scaled: np.ndarray, max_k: int = 8) -> int:
     """
@@ -135,7 +136,7 @@ def main():
     report_df.to_csv(REPORT_OUTPUT)
     print(f"\nSaved report → {REPORT_OUTPUT}")
 
-    # 4. Clean 
+    # 4. Clean
     clean_df = cleaner.clean()
     print("\n" + cleaner.cleaning_summary())
 
@@ -153,6 +154,7 @@ def main():
 
     # 6. Predictive model 
     feature_importance = None  # populated below if model runs
+    model_metrics = None
     if TARGET_COL is not None and TARGET_COL in df.columns:
         # y from the raw (deduped) df to avoid leakage through one-hot encoding
         y = df[TARGET_COL].astype(int)
@@ -169,27 +171,41 @@ def main():
                 f"X and y length mismatch: len(X)={len(X)} vs len(y)={len(y)}"
             )
 
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42, stratify=y
-        )
-
         model = Pipeline([
             ("scaler", StandardScaler(with_mean=False)),
             ("clf",    LogisticRegression(max_iter=2000)),
         ])
-        model.fit(X_train, y_train)
 
-        probs = model.predict_proba(X_test)[:, 1]
-        preds = (probs >= 0.5).astype(int)
+        # Cross-validation 
+        # StratifiedKFold keeps the same class ratio in every fold
+        cv = StratifiedKFold(n_splits=CV_FOLDS, shuffle=True, random_state=42)
 
-        acc = accuracy_score(y_test, preds)
-        auc = roc_auc_score(y_test, probs)
+        cv_results = cross_validate(
+            model, X, y,
+            cv=cv,
+            scoring=["accuracy", "roc_auc"],
+            return_train_score=False,
+        )
 
-        print("\n── Model Results (Logistic Regression) ──────────────────────")
-        print(f"  Accuracy : {acc:.4f}")
-        print(f"  ROC-AUC  : {auc:.4f}")
+        acc_scores = cv_results["test_accuracy"]
+        auc_scores = cv_results["test_roc_auc"]
 
-        # Feature importance (top 10 by absolute coefficient)
+        print(f"\n── Model Results (Logistic Regression, {CV_FOLDS}-fold CV) ──────────")
+        print(f"  Accuracy : {acc_scores.mean():.4f}  ± {acc_scores.std():.4f}")
+        print(f"  ROC-AUC  : {auc_scores.mean():.4f}  ± {auc_scores.std():.4f}")
+        print(f"  Per-fold AUC : {[round(s, 4) for s in auc_scores]}")
+
+        model_metrics = {
+            "accuracy_mean": round(acc_scores.mean(), 4),
+            "accuracy_std":  round(acc_scores.std(), 4),
+            "roc_auc_mean":  round(auc_scores.mean(), 4),
+            "roc_auc_std":   round(auc_scores.std(), 4),
+        }
+
+        # Final model fit on full data (for feature importance) 
+        # We refit on all data so we get stable coefficients to interpret.
+        # This model is NOT used for the CV metrics above.
+        model.fit(X, y)
         coef = model.named_steps["clf"].coef_[0]
         fi_series = pd.Series(coef, index=X.columns)
         fi_abs = fi_series.abs().sort_values(ascending=False)
@@ -205,6 +221,7 @@ def main():
             "Set TARGET_COL to a binary column in your CSV to enable prediction."
         )
         feature_importance = None
+        model_metrics = None
 
     # 7. Generate charts 
     generate_all_charts(
