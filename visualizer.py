@@ -1,8 +1,3 @@
-
-"""
-Generates and saves Plotly charts from the pipeline outputs.
-"""
-
 import os
 from typing import Optional
 
@@ -42,7 +37,7 @@ _LAYOUT = dict(
 _CLUSTER_PALETTE = px.colors.qualitative.Vivid
 
 
-# 1. Cluster size bar chart
+# 1. Cluster size bar chart 
 
 def plot_cluster_sizes(df_with_clusters: pd.DataFrame, cluster_col: str = "cluster") -> str:
     """Bar chart: how many customers are in each cluster."""
@@ -75,8 +70,7 @@ def plot_cluster_sizes(df_with_clusters: pd.DataFrame, cluster_col: str = "clust
     return _save(fig, "cluster_sizes.html")
 
 
-# 2. Scatter plot 
-
+# 2. Scatter plot (top 2 features) 
 def plot_cluster_scatter(
     df_with_clusters: pd.DataFrame,
     cluster_col: str = "cluster",
@@ -180,6 +174,7 @@ def plot_cluster_profiles(
 
 
 # 4. Feature importance bar chart 
+
 def plot_feature_importance(
     feature_importance: dict,
     target_col: str = "converted",
@@ -219,7 +214,6 @@ def plot_feature_importance(
 
 
 # 5. Elbow curve 
-
 def plot_elbow_curve(
     clean_df: pd.DataFrame,
     cluster_col: str = "cluster",
@@ -274,7 +268,162 @@ def plot_elbow_curve(
     return _save(fig, "elbow_curve.html")
 
 
+
+# 6. Feature histograms by cluster 
+
+def plot_feature_histograms(
+    df_with_clusters: pd.DataFrame,
+    cluster_col: str = "cluster",
+    id_col: str = "customer_id",
+    max_features: int = 6,
+) -> str:
+    """
+    Histogram grid showing the distribution of the top numeric features,
+    split by cluster. Makes it easy to see what makes each segment different.
+    Picks the features with the highest between-cluster variance.
+    """
+    numeric_cols = [
+        c for c in df_with_clusters.select_dtypes(include="number").columns
+        if c not in (cluster_col, id_col) and df_with_clusters[c].nunique() > 2
+    ]
+
+    if len(numeric_cols) < 1:
+        print("  [Visualizer] No numeric columns for histograms — skipping.")
+        return ""
+
+    # Pick most discriminating features by between-cluster variance
+    means = df_with_clusters.groupby(cluster_col)[numeric_cols].mean()
+    between_var = means.var(axis=0).sort_values(ascending=False)
+    top_features = between_var.index[:max_features].tolist()
+
+    n_cols = 2
+    n_rows = -(-len(top_features) // n_cols)  # ceiling division
+
+    fig = make_subplots(
+        rows=n_rows,
+        cols=n_cols,
+        subplot_titles=top_features,
+        vertical_spacing=0.12,
+        horizontal_spacing=0.1,
+    )
+
+    cluster_ids = sorted(df_with_clusters[cluster_col].unique())
+
+    for i, feature in enumerate(top_features):
+        row = i // n_cols + 1
+        col = i % n_cols + 1
+        for j, cid in enumerate(cluster_ids):
+            subset = df_with_clusters[df_with_clusters[cluster_col] == cid][feature].dropna()
+            fig.add_trace(
+                go.Histogram(
+                    x=subset,
+                    name=f"Cluster {cid}",
+                    marker_color=_CLUSTER_PALETTE[j % len(_CLUSTER_PALETTE)],
+                    opacity=0.65,
+                    showlegend=(i == 0),  # only show legend once
+                    bingroup=i,           # same bin width across clusters per feature
+                ),
+                row=row,
+                col=col,
+            )
+
+    fig.update_layout(
+        **_LAYOUT,
+        title="Feature Distributions by Cluster",
+        barmode="overlay",
+        height=320 * n_rows,
+        legend=dict(orientation="h", yanchor="bottom", y=-0.08),
+    )
+    return _save(fig, "feature_histograms.html")
+
+
+# 7. ROC curve 
+
+def plot_roc_curve(
+    X: pd.DataFrame,
+    y: pd.Series,
+    model,
+    cv,
+    target_col: str = "converted",
+) -> str:
+    """
+    Plot the ROC curve for each CV fold plus the mean ROC curve.
+    Each fold gets its own line so you can see how stable the model is.
+    A random-chance diagonal reference line is included.
+    """
+    from sklearn.metrics import roc_curve, auc
+
+    fig = go.Figure()
+
+    fold_aucs = []
+    mean_fpr = np.linspace(0, 1, 200)
+    tprs = []
+
+    for fold_idx, (train_idx, test_idx) in enumerate(cv.split(X, y)):
+        X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
+        y_train, y_test = y.iloc[train_idx], y.iloc[test_idx]
+
+        model.fit(X_train, y_train)
+        probs = model.predict_proba(X_test)[:, 1]
+
+        fpr, tpr, _ = roc_curve(y_test, probs)
+        fold_auc = auc(fpr, tpr)
+        fold_aucs.append(fold_auc)
+
+        # Interpolate TPR at common FPR points for mean curve
+        interp_tpr = np.interp(mean_fpr, fpr, tpr)
+        interp_tpr[0] = 0.0
+        tprs.append(interp_tpr)
+
+        fig.add_trace(go.Scatter(
+            x=fpr,
+            y=tpr,
+            mode="lines",
+            name=f"Fold {fold_idx + 1} (AUC={fold_auc:.3f})",
+            line=dict(
+                color=_CLUSTER_PALETTE[fold_idx % len(_CLUSTER_PALETTE)],
+                width=1.5,
+            ),
+            opacity=0.6,
+        ))
+
+    # Mean ROC curve
+    mean_tpr = np.mean(tprs, axis=0)
+    mean_tpr[-1] = 1.0
+    mean_auc = np.mean(fold_aucs)
+    std_auc  = np.std(fold_aucs)
+
+    fig.add_trace(go.Scatter(
+        x=mean_fpr,
+        y=mean_tpr,
+        mode="lines",
+        name=f"Mean ROC (AUC={mean_auc:.3f} ± {std_auc:.3f})",
+        line=dict(color="#ffffff", width=3),
+    ))
+
+    # Random chance baseline
+    fig.add_trace(go.Scatter(
+        x=[0, 1],
+        y=[0, 1],
+        mode="lines",
+        name="Random chance",
+        line=dict(color="#888888", width=1.5, dash="dash"),
+    ))
+
+    fig.update_layout(
+        **_LAYOUT,
+        title=f"ROC Curve — '{target_col}' prediction",
+        xaxis_title="False Positive Rate",
+        yaxis_title="True Positive Rate",
+        xaxis=dict(range=[0, 1]),
+        yaxis=dict(range=[0, 1.02]),
+        legend=dict(orientation="v", x=0.62, y=0.08),
+    )
+    return _save(fig, "roc_curve.html")
+
+
 # Convenience: generate all charts at once 
+
 def generate_all_charts(
     df_with_clusters: pd.DataFrame,
     clean_df: pd.DataFrame,
@@ -283,10 +432,14 @@ def generate_all_charts(
     cluster_col: str = "cluster",
     id_col: str = "customer_id",
     chosen_k: Optional[int] = None,
+    X: Optional[pd.DataFrame] = None,
+    y: Optional[pd.Series] = None,
+    model=None,
+    cv=None,
 ) -> list[str]:
     """
     Generate all available charts and return a list of saved file paths.
-    Skips feature importance chart if feature_importance is None.
+    Pass X, y, model, cv to also generate the ROC curve.
     """
     print("\n[Visualizer] Generating charts...")
     paths = []
@@ -295,9 +448,13 @@ def generate_all_charts(
     paths.append(plot_cluster_scatter(df_with_clusters, cluster_col, id_col))
     paths.append(plot_cluster_profiles(df_with_clusters, cluster_col, id_col))
     paths.append(plot_elbow_curve(clean_df, cluster_col, id_col, chosen_k=chosen_k))
+    paths.append(plot_feature_histograms(df_with_clusters, cluster_col, id_col))
 
     if feature_importance:
         paths.append(plot_feature_importance(feature_importance, target_col))
+
+    if X is not None and y is not None and model is not None and cv is not None:
+        paths.append(plot_roc_curve(X, y, model, cv, target_col))
 
     paths = [p for p in paths if p]  # remove empty strings from skipped charts
     print(f"\n[Visualizer] {len(paths)} chart(s) saved to ./{CHARTS_DIR}/")

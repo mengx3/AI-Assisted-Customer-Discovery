@@ -1,4 +1,5 @@
 # main.py
+import os
 import pandas as pd
 import numpy as np
 
@@ -12,6 +13,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from data_loader import DataLoader
 from data_cleaner import DataCleaner
 from visualizer import generate_all_charts
+from insight_generator import generate_all_insights
 
 
 # Config 
@@ -57,14 +59,7 @@ def choose_k(X_scaled: np.ndarray, max_k: int = 8) -> int:
 
 
 def run_clustering(clean_df: pd.DataFrame, k: int | None = None) -> tuple[pd.DataFrame, int]:
-    """
-    Run K-Means on the numeric columns of clean_df.
-
-    Returns
-    -------
-    df_with_clusters : original clean_df with a new 'cluster' column appended
-    k                : number of clusters actually used
-    """
+    
     # Only use numeric columns for clustering (exclude ID)
     numeric_cols = [
         c for c in clean_df.select_dtypes(include="number").columns
@@ -127,7 +122,6 @@ def main():
         print(f"\nDropped {before - after} duplicate row(s).")
 
     # 3. Data quality report (before cleaning) 
-    cleaner = DataCleaner(df, id_col=ID_COL)
     report_df = cleaner.report()
 
     print("\nData Quality Report (top rows):")
@@ -136,7 +130,7 @@ def main():
     report_df.to_csv(REPORT_OUTPUT)
     print(f"\nSaved report → {REPORT_OUTPUT}")
 
-    # 4. Clean
+    # 4. Clean 
     clean_df = cleaner.clean()
     print("\n" + cleaner.cleaning_summary())
 
@@ -202,7 +196,7 @@ def main():
             "roc_auc_std":   round(auc_scores.std(), 4),
         }
 
-        # Final model fit on full data (for feature importance) 
+        # Final model fit on full data (for feature importance)
         # We refit on all data so we get stable coefficients to interpret.
         # This model is NOT used for the CV metrics above.
         model.fit(X, y)
@@ -232,7 +226,24 @@ def main():
         cluster_col="cluster",
         id_col=ID_COL,
         chosen_k=k_used,
+        X=X if "X" in dir() else None,
+        y=y if "y" in dir() else None,
+        model=model if "model" in dir() else None,
+        cv=cv if "cv" in dir() else None,
     )
+
+    # Generate AI insights 
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        generate_all_insights(
+            df_with_clusters=df_with_clusters,
+            cluster_col="cluster",
+            id_col=ID_COL,
+            target_col=TARGET_COL,
+            feature_importance=feature_importance,
+            model_metrics=model_metrics,
+        )
+    else:
+        print("\n[Insights] Skipping AI insights — ANTHROPIC_API_KEY not set.")
 
 
 if __name__ == "__main__":
