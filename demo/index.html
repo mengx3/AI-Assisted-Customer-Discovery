@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Assisted Customer Discovery</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0b0f1a;--surface:#111827;--surface2:#1a2236;--surface3:#222c42;
+  --border:#2a3550;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --accent:#6366f1;--accent2:#818cf8;--accent-glow:rgba(99,102,241,.15);
+  --green:#10b981;--green-glow:rgba(16,185,129,.12);
+  --amber:#f59e0b;--red:#ef4444;--cyan:#06b6d4;
+  --radius:12px;--radius-lg:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent2);text-decoration:none}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(20px);background:rgba(11,15,26,.8);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
+nav .logo{font-weight:700;font-size:1.05rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.6rem}
+nav .logo span{background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+nav .links{display:flex;gap:1.8rem;font-size:.85rem;font-weight:500;color:var(--text2)}
+nav .links a:hover{color:var(--text)}
+.badge{font-size:.65rem;background:var(--accent);color:#fff;padding:2px 8px;border-radius:99px;font-weight:600;margin-left:.5rem;vertical-align:middle}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.12),transparent 70%);top:-100px;left:50%;transform:translateX(-50%);pointer-events:none}
+.hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,.08),transparent 70%);bottom:60px;right:-80px;pointer-events:none}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:1.2rem;max-width:700px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--accent2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.15rem;color:var(--text2);max-width:560px;margin-bottom:2.5rem}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.btn{padding:.7rem 1.6rem;border-radius:99px;font-weight:600;font-size:.9rem;border:none;cursor:pointer;transition:.2s;text-decoration:none;display:inline-block}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:var(--accent2);box-shadow:0 0 30px var(--accent-glow)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--accent);color:var(--accent2)}
+
+section{padding:5rem 2rem;max-width:1200px;margin:0 auto}
+.section-label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--accent2);margin-bottom:.6rem}
+.section-title{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;letter-spacing:-.02em;margin-bottom:.8rem}
+.section-desc{color:var(--text2);max-width:600px;margin-bottom:2.5rem;font-size:1.02rem}
+
+.pipeline-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;position:relative;transition:.25s}
+.step:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent2);margin-bottom:.6rem;font-weight:500}
+.step h3{font-size:1rem;font-weight:600;margin-bottom:.4rem}
+.step p{font-size:.83rem;color:var(--text2);line-height:1.5}
+.step-icon{font-size:1.5rem;margin-bottom:.8rem}
+
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:3rem}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem 1.5rem;text-align:center;transition:.2s}
+.metric-card:hover{border-color:var(--accent)}
+.metric-val{font-size:1.8rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:-.02em}
+.metric-val.green{color:var(--green)}.metric-val.amber{color:var(--amber)}.metric-val.accent{color:var(--accent2)}.metric-val.cyan{color:var(--cyan)}
+.metric-label{font-size:.78rem;color:var(--text3);margin-top:.3rem;font-weight:500}
+
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem}
+@media(max-width:768px){.charts-row{grid-template-columns:1fr}}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.8rem;position:relative}
+.chart-card h4{font-size:.95rem;font-weight:600;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+.chart-card h4 .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+canvas{max-height:280px}
+
+.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th{text-align:left;padding:.8rem 1rem;font-weight:600;color:var(--text2);background:var(--surface2);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:.7rem 1rem;border-bottom:1px solid var(--border);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.cluster-tag{display:inline-block;padding:2px 10px;border-radius:99px;font-size:.75rem;font-weight:600;font-family:'JetBrains Mono',monospace;background:rgba(99,102,241,.15);color:var(--accent2)}
+
+.cm-grid{display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:2px;max-width:320px;margin:1.5rem auto}
+.cm-cell{display:flex;align-items:center;justify-content:center;padding:1.2rem;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:1.1rem;border-radius:6px}
+.cm-header{font-size:.7rem;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Sans',sans-serif}
+.cm-tp{background:rgba(16,185,129,.15);color:var(--green)}.cm-tn{background:rgba(99,102,241,.12);color:var(--accent2)}
+.cm-fp{background:rgba(245,158,11,.1);color:var(--amber)}.cm-fn{background:rgba(239,68,68,.1);color:var(--red)}
+
+.tech-pills{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.pill{background:var(--surface2);border:1px solid var(--border);border-radius:99px;padding:.4rem 1rem;font-size:.8rem;font-weight:500;color:var(--text2);transition:.2s}
+.pill:hover{border-color:var(--accent);color:var(--accent2)}
+
+.arch-flow{display:flex;align-items:center;justify-content:center;gap:.3rem;flex-wrap:wrap;margin:2rem 0}
+.arch-node{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1.2rem;text-align:center;min-width:120px;transition:.2s}
+.arch-node:hover{border-color:var(--accent);transform:scale(1.04)}
+.arch-node .an-label{font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+.arch-node .an-name{font-size:.9rem;font-weight:600;margin-top:.2rem}
+.arch-arrow{color:var(--text3);font-size:1.2rem}
+
+footer{text-align:center;padding:3rem 2rem;color:var(--text3);font-size:.82rem;border-top:1px solid var(--border)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .7s ease both}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}.delay-4{animation-delay:.4s}.delay-5{animation-delay:.5s}
+
+.terminal{background:#0d1117;border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.8;color:#8b949e;overflow-x:auto;margin:1.5rem 0}
+.terminal .prompt{color:var(--green)}.terminal .cmd{color:var(--text)}.terminal .output{color:var(--text2)}
+
+/* ── NEW: STATUS / LOADING / ERROR ── */
+.status-bar{display:flex;align-items:center;gap:.7rem;padding:.6rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:99px;font-size:.78rem;color:var(--text2);margin:1rem auto 0;width:fit-content}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s ease-in-out infinite}
+.status-dot.loading{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.status-dot.error{background:var(--red);box-shadow:0 0 10px var(--red);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.refresh-btn{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:99px;font-size:.72rem;cursor:pointer;transition:.2s;font-family:inherit}
+.refresh-btn:hover{border-color:var(--accent);color:var(--accent2)}
+
+.error-panel{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:var(--radius);padding:1.5rem;margin:1rem 0;display:none}
+.error-panel.visible{display:block}
+.error-panel h4{color:var(--red);font-size:1rem;margin-bottom:.5rem}
+.error-panel p{color:var(--text2);font-size:.85rem;margin-bottom:.5rem}
+.error-panel code{background:var(--bg);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text)}
+
+.skeleton{background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:6px;color:transparent!important}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="2"><defs><linearGradient id="g" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366f1"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg><span>CustomerAI</span> Discovery<span class="badge">LIVE</span></div>
+  <div class="links">
+    <a href="#pipeline">Pipeline</a>
+    <a href="#results">Results</a>
+    <a href="#segments">Segments</a>
+    <a href="#model">Model</a>
+    <a href="#stack">Stack</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1 class="fade-up">Discover Your Best Customers with <em>AI-Powered</em> Segmentation</h1>
+  <p class="fade-up delay-1">An end-to-end ML pipeline that cleans, segments, and predicts customer conversion — live results from your latest pipeline run.</p>
+  <div class="hero-btns fade-up delay-2">
+    <a href="#results" class="btn btn-primary">View Results ↓</a>
+    <a href="#pipeline" class="btn btn-outline">How It Works</a>
+  </div>
+  <div class="status-bar fade-up delay-3">
+    <span class="status-dot loading" id="statusDot"></span>
+    <span id="statusText">Loading pipeline outputs…</span>
+    <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+  </div>
+</div>
+
+<section id="pipeline">
+  <div class="section-label">How It Works</div>
+  <div class="section-title">End-to-End Pipeline</div>
+  <div class="section-desc">One command takes raw customer data through cleaning, feature engineering, unsupervised segmentation, and supervised conversion prediction.</div>
+
+  <div class="terminal">
+    <span class="prompt">$</span> <span class="cmd">python scripts/generate_sample_data.py --out data/raw/customers.csv --n 2000</span><br>
+    <span class="output">Wrote sample data: data/raw/customers.csv (2000 rows)</span><br><br>
+    <span class="prompt">$</span> <span class="cmd">python scripts/run_pipeline.py --input data/raw/customers.csv --outdir outputs</span><br>
+    <span class="output">✅ Pipeline complete.</span><br>
+    <span class="output">- Cleaned data: outputs/data/customers_cleaned.csv</span><br>
+    <span class="output">- Cluster profiles: outputs/reports/cluster_profiles.csv</span><br>
+    <span class="output">- Model: outputs/models/conversion_model.joblib</span><br>
+    <span class="output">- Metrics: outputs/reports/metrics.json</span>
+  </div>
+
+  <div class="pipeline-steps">
+    <div class="step fade-up"><div class="step-icon">📥</div><div class="step-num">STEP 01</div><h3>Data Ingestion</h3><p>Read CSV or Excel files with automatic format detection and schema validation.</p></div>
+    <div class="step fade-up delay-1"><div class="step-icon">🧹</div><div class="step-num">STEP 02</div><h3>Cleaning</h3><p>Normalize columns, deduplicate, handle missing values, and generate a cleaning report.</p></div>
+    <div class="step fade-up delay-2"><div class="step-icon">📊</div><div class="step-num">STEP 03</div><h3>EDA &amp; Features</h3><p>Auto-detect column types, one-hot encode, standardize, and impute.</p></div>
+    <div class="step fade-up delay-3"><div class="step-icon">🎯</div><div class="step-num">STEP 04</div><h3>Segmentation</h3><p>K-Means with silhouette-based K selection. Automatically profiles each cluster.</p></div>
+    <div class="step fade-up delay-4"><div class="step-icon">🤖</div><div class="step-num">STEP 05</div><h3>Prediction</h3><p>Train Random Forest or Logistic Regression to predict conversion.</p></div>
+    <div class="step fade-up delay-5"><div class="step-icon">💾</div><div class="step-num">STEP 06</div><h3>Artifacts</h3><p>Save cleaned data, model, preprocessor, metrics, and cluster profiles.</p></div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="section-label">Pipeline Output</div>
+  <div class="section-title">Results at a Glance</div>
+  <div class="section-desc" id="resultsDesc">Loading latest pipeline run…</div>
+
+  <div class="error-panel" id="errorPanel">
+    <h4>⚠ Couldn't load pipeline outputs</h4>
+    <p>Make sure you ran the pipeline and that this page is served from your project root. Try:</p>
+    <p><code>cd /path/to/ai-assisted-customer-discovery &amp;&amp; python -m http.server 8000</code></p>
+    <p>Then open <code>http://localhost:8000/demo/index.html</code>. Opening the file directly (<code>file://</code>) will not work — browsers block <code>fetch</code> from local files.</p>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card"><div class="metric-val accent skeleton" id="mCustomers">—</div><div class="metric-label">Customers Processed</div></div>
+    <div class="metric-card"><div class="metric-val cyan skeleton" id="mClusters">—</div><div class="metric-label">Clusters Found</div></div>
+    <div class="metric-card"><div class="metric-val green skeleton" id="mAccuracy">—</div><div class="metric-label">Accuracy</div></div>
+    <div class="metric-card"><div class="metric-val amber skeleton" id="mROC">—</div><div class="metric-label">ROC-AUC</div></div>
+    <div class="metric-card"><div class="metric-val accent skeleton" id="mPrecision">—</div><div class="metric-label">Precision</div></div>
+    <div class="metric-card"><div class="metric-val cyan skeleton" id="mPR">—</div><div class="metric-label">PR-AUC</div></div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card"><h4><span class="dot" style="background:var(--accent)"></span> Silhouette Score by K</h4><canvas id="silhouetteChart"></canvas></div>
+    <div class="chart-card"><h4><span class="dot" style="background:var(--green)"></span> Customers per Cluster</h4><canvas id="clusterChart"></canvas></div>
+  </div>
+  <div class="charts-row">
+    <div class="chart-card"><h4><span class="dot" style="background:var(--cyan)"></span> Industry Distribution</h4><canvas id="industryChart"></canvas></div>
+    <div class="chart-card"><h4><span class="dot" style="background:var(--amber)"></span> Acquisition Channels</h4><canvas id="channelChart"></canvas></div>
+  </div>
+</section>
+
+<section id="segments">
+  <div class="section-label">Unsupervised Segmentation</div>
+  <div class="section-title">Cluster Profiles</div>
+  <div class="section-desc">Each cluster reveals a distinct behavioral pattern. Table below is generated from <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem">cluster_profiles.csv</code>.</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr id="clusterTableHead"><th>Loading…</th></tr></thead>
+      <tbody id="clusterTableBody"><tr><td>Loading cluster profiles…</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="model">
+  <div class="section-label">Supervised Prediction</div>
+  <div class="section-title">Conversion Model Performance</div>
+  <div class="section-desc">Classifier performance on held-out test set.</div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <h4><span class="dot" style="background:var(--accent)"></span> Confusion Matrix</h4>
+      <div class="cm-grid">
+        <div></div>
+        <div class="cm-cell cm-header">Pred: 0</div>
+        <div class="cm-cell cm-header">Pred: 1</div>
+        <div class="cm-cell cm-header">True: 0</div>
+        <div class="cm-cell cm-tn" id="cmTN">—</div>
+        <div class="cm-cell cm-fp" id="cmFP">—</div>
+        <div class="cm-cell cm-header">True: 1</div>
+        <div class="cm-cell cm-fn" id="cmFN">—</div>
+        <div class="cm-cell cm-tp" id="cmTP">—</div>
+      </div>
+      <p style="font-size:.78rem;color:var(--text3);text-align:center;margin-top:1rem" id="cmSubtitle">Loading…</p>
+    </div>
+    <div class="chart-card">
+      <h4><span class="dot" style="background:var(--green)"></span> Classification Metrics</h4>
+      <canvas id="metricsRadar"></canvas>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="section-label">Technical Details</div>
+  <div class="section-title">Architecture &amp; Stack</div>
+  <div class="section-desc">Modular Python package — every stage is independently testable.</div>
+
+  <div class="arch-flow">
+    <div class="arch-node"><div class="an-label">Input</div><div class="an-name">CSV / Excel</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node"><div class="an-label">Module</div><div class="an-name">io.py</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node"><div class="an-label">Module</div><div class="an-name">cleaning.py</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node"><div class="an-label">Module</div><div class="an-name">features.py</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node"><div class="an-label">Module</div><div class="an-name">segmentation.py</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node"><div class="an-label">Module</div><div class="an-name">prediction.py</div></div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-node"><div class="an-label">Output</div><div class="an-name">artifacts.py</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem">
+    <div>
+      <h4 style="font-size:.9rem;font-weight:600;margin-bottom:.6rem">Core Stack</h4>
+      <div class="tech-pills">
+        <span class="pill">Python 3.10+</span><span class="pill">pandas</span><span class="pill">NumPy</span>
+        <span class="pill">scikit-learn</span><span class="pill">matplotlib</span><span class="pill">joblib</span>
+      </div>
+    </div>
+    <div>
+      <h4 style="font-size:.9rem;font-weight:600;margin-bottom:.6rem">Frontend / Demo</h4>
+      <div class="tech-pills">
+        <span class="pill">Streamlit</span><span class="pill">Plotly</span><span class="pill">Chart.js</span><span class="pill">HTML / CSS</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="terminal" style="margin-top:2rem">
+    <span class="prompt">#</span> <span class="cmd">Re-run pipeline with new data, then refresh this page</span><br>
+    <span class="prompt">$</span> <span class="cmd">python scripts/generate_sample_data.py --out data/raw/customers.csv --n 5000</span><br>
+    <span class="prompt">$</span> <span class="cmd">python scripts/run_pipeline.py --input data/raw/customers.csv --outdir outputs</span><br>
+    <span class="prompt">$</span> <span class="cmd">python -m http.server 8000</span><br>
+    <span class="output"># Then open http://localhost:8000/demo/index.html</span>
+  </div>
+</section>
+
+<footer>
+  AI-Assisted Customer Discovery &middot; Data loaded dynamically from <code>outputs/</code> &middot; 2025
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  DYNAMIC LOADER — reads latest pipeline outputs from ../outputs/
+// ═══════════════════════════════════════════════════════════════════
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = '#2a3550';
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+// Paths are relative to demo/index.html → go up one level to project root
+const BASE = '..';
+const PATHS = {
+  metrics:   `${BASE}/outputs/reports/metrics.json`,
+  kScores:   `${BASE}/outputs/reports/k_silhouette_scores.json`,
+  profiles:  `${BASE}/outputs/reports/cluster_profiles.csv`,
+  cleaned:   `${BASE}/outputs/data/customers_cleaned.csv`,
+};
+
+// Chart handles — destroyed and recreated on refresh
+const charts = {};
+
+// ── CSV parser — handles quoted fields, commas inside quotes, and escaped quotes ──
+function parseCSV(text){
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inQuotes){
+      if (c === '"' && text[i+1] === '"'){ field += '"'; i++; }
+      else if (c === '"'){ inQuotes = false; }
+      else { field += c; }
+    } else {
+      if (c === '"'){ inQuotes = true; }
+      else if (c === ','){ row.push(field); field = ''; }
+      else if (c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r'){ /* skip */ }
+      else { field += c; }
+    }
+  }
+  if (field.length || row.length){ row.push(field); rows.push(row); }
+  if (!rows.length) return [];
+  const headers = rows[0];
+  return rows.slice(1).filter(r => r.length === headers.length).map(r => {
+    const o = {};
+    headers.forEach((h,i) => o[h] = r[i]);
+    return o;
+  });
+}
+
+function num(v){ const n = parseFloat(v); return isNaN(n) ? null : n; }
+function fmtPct(v){ return (v*100).toFixed(1) + '%'; }
+function fmt3(v){ return v.toFixed(3); }
+
+function setStatus(kind, text){
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  dot.className = 'status-dot' + (kind === 'loading' ? ' loading' : kind === 'error' ? ' error' : '');
+  txt.textContent = text;
+}
+
+function showError(){
+  document.getElementById('errorPanel').classList.add('visible');
+  document.querySelectorAll('.skeleton').forEach(el => el.textContent = 'N/A');
+}
+
+async function fetchJSON(path){
+  const r = await fetch(path, {cache: 'no-store'});
+  if (!r.ok) throw new Error(`${path} → ${r.status}`);
+  return r.json();
+}
+async function fetchText(path){
+  const r = await fetch(path, {cache: 'no-store'});
+  if (!r.ok) throw new Error(`${path} → ${r.status}`);
+  return r.text();
+}
+
+// ── MAIN LOADER ──
+async function loadAll(){
+  setStatus('loading', 'Loading pipeline outputs…');
+  document.getElementById('errorPanel').classList.remove('visible');
+
+  let metrics, kScores, profilesCSV, cleanedCSV;
+  try {
+    [metrics, kScores, profilesCSV, cleanedCSV] = await Promise.all([
+      fetchJSON(PATHS.metrics),
+      fetchJSON(PATHS.kScores),
+      fetchText(PATHS.profiles),
+      fetchText(PATHS.cleaned),
+    ]);
+  } catch(e){
+    console.error('Load failed:', e);
+    setStatus('error', 'Couldn\'t load outputs — see panel below');
+    showError();
+    return;
+  }
+
+  const profiles = parseCSV(profilesCSV);
+  const cleaned = parseCSV(cleanedCSV);
+  const totalCustomers = cleaned.length;
+  const nClusters = profiles.length;
+
+  // Remove skeleton state
+  document.querySelectorAll('.skeleton').forEach(el => el.classList.remove('skeleton'));
+
+  // ── Top metrics ──
+  document.getElementById('mCustomers').textContent = totalCustomers.toLocaleString();
+  document.getElementById('mClusters').textContent = nClusters;
+  document.getElementById('mAccuracy').textContent = fmtPct(metrics.accuracy);
+  document.getElementById('mROC').textContent = fmt3(metrics.roc_auc);
+  document.getElementById('mPrecision').textContent = fmtPct(metrics.precision);
+  document.getElementById('mPR').textContent = fmt3(metrics.pr_auc);
+
+  document.getElementById('resultsDesc').textContent =
+    `From ${totalCustomers.toLocaleString()} customers: cleaned, segmented into ${nClusters} clusters, and scored for conversion likelihood.`;
+
+  // ── Confusion matrix ──
+  const cm = metrics.confusion_matrix;
+  document.getElementById('cmTN').textContent = cm[0][0];
+  document.getElementById('cmFP').textContent = cm[0][1];
+  document.getElementById('cmFN').textContent = cm[1][0];
+  document.getElementById('cmTP').textContent = cm[1][1];
+  const total = cm[0][0]+cm[0][1]+cm[1][0]+cm[1][1];
+  const neg = cm[0][0]+cm[0][1], pos = cm[1][0]+cm[1][1];
+  document.getElementById('cmSubtitle').textContent = `Test set: ${total} samples (${neg} neg / ${pos} pos)`;
+
+  // ── Silhouette chart ──
+  const kKeys = Object.keys(kScores).map(Number).sort((a,b)=>a-b);
+  const kVals = kKeys.map(k => kScores[k]);
+  if (charts.silhouette) charts.silhouette.destroy();
+  charts.silhouette = new Chart(document.getElementById('silhouetteChart'), {
+    type:'line',
+    data:{labels:kKeys,datasets:[{label:'Silhouette',data:kVals,borderColor:'#6366f1',backgroundColor:'rgba(99,102,241,.1)',fill:true,tension:.3,pointRadius:5,pointBackgroundColor:'#6366f1',pointHoverRadius:8}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'K'}},y:{title:{display:true,text:'Score'}}}}
+  });
+
+  // ── Cluster sizes ──
+  const clusterLabels = profiles.map(p => `Cluster ${p.cluster}`);
+  const clusterSizes = profiles.map(p => parseInt(p.n_customers));
+  const palette = ['#6366f1','#10b981','#06b6d4','#f59e0b','#ef4444','#8b5cf6','#ec4899','#14b8a6','#eab308','#f97316'];
+  if (charts.cluster) charts.cluster.destroy();
+  charts.cluster = new Chart(document.getElementById('clusterChart'),{
+    type:'bar',
+    data:{labels:clusterLabels,datasets:[{data:clusterSizes,backgroundColor:clusterSizes.map((_,i)=>palette[i%palette.length]+'99'),borderColor:clusterSizes.map((_,i)=>palette[i%palette.length]),borderWidth:1,borderRadius:8}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}
+  });
+
+  // ── Industry distribution (from cleaned data) ──
+  if (cleaned.length && cleaned[0].industry !== undefined){
+    const indCounts = {};
+    cleaned.forEach(r => { const v = r.industry; if (v && v !== 'nan' && v !== '') indCounts[v] = (indCounts[v]||0)+1; });
+    const indSorted = Object.entries(indCounts).sort((a,b)=>b[1]-a[1]);
+    if (charts.industry) charts.industry.destroy();
+    charts.industry = new Chart(document.getElementById('industryChart'),{
+      type:'doughnut',
+      data:{labels:indSorted.map(x=>x[0]),datasets:[{data:indSorted.map(x=>x[1]),backgroundColor:indSorted.map((_,i)=>palette[i%palette.length]),borderWidth:0,hoverOffset:8}]},
+      options:{responsive:true,plugins:{legend:{position:'right',labels:{boxWidth:12,padding:10,font:{size:12}}}}}
+    });
+  }
+
+  // ── Acquisition channels ──
+  if (cleaned.length && cleaned[0].acquisition_channel !== undefined){
+    const chCounts = {};
+    cleaned.forEach(r => { const v = r.acquisition_channel; if (v && v !== 'nan' && v !== '') chCounts[v] = (chCounts[v]||0)+1; });
+    const chSorted = Object.entries(chCounts).sort((a,b)=>b[1]-a[1]);
+    if (charts.channel) charts.channel.destroy();
+    charts.channel = new Chart(document.getElementById('channelChart'),{
+      type:'bar',
+      data:{labels:chSorted.map(x=>x[0]),datasets:[{data:chSorted.map(x=>x[1]),backgroundColor:'rgba(245,158,11,.5)',borderColor:'#f59e0b',borderWidth:1,borderRadius:8}]},
+      options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true}}}
+    });
+  }
+
+  // ── Radar ──
+  if (charts.radar) charts.radar.destroy();
+  charts.radar = new Chart(document.getElementById('metricsRadar'),{
+    type:'radar',
+    data:{labels:['Accuracy','Precision','Recall','F1','ROC-AUC','PR-AUC'],
+      datasets:[{label:'Model',data:[metrics.accuracy,metrics.precision,metrics.recall,metrics.f1,metrics.roc_auc,metrics.pr_auc],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.15)',pointBackgroundColor:'#10b981',pointRadius:4}]},
+    options:{responsive:true,plugins:{legend:{display:false}},scales:{r:{min:0,max:1,ticks:{stepSize:0.2,backdropColor:'transparent'}}}}
+  });
+
+  // ── Cluster profile table ──
+  renderClusterTable(profiles);
+
+  // Timestamp
+  const now = new Date().toLocaleTimeString();
+  setStatus('ok', `Loaded successfully · ${now}`);
+}
+
+function renderClusterTable(profiles){
+  if (!profiles.length) return;
+  // Pick a useful subset of columns — prefer common ones, fall back to what's available
+  const preferredCols = [
+    {key:'cluster', label:'Cluster', isCluster:true},
+    {key:'n_customers', label:'Size'},
+    {key:'age__mean', label:'Avg Age', fmt:v=>parseFloat(v).toFixed(1)},
+    {key:'visits_30d__mean', label:'Visits/30d', fmt:v=>parseFloat(v).toFixed(1)},
+    {key:'emails_opened_30d__mean', label:'Emails/30d', fmt:v=>parseFloat(v).toFixed(1)},
+    {key:'avg_session_min__mean', label:'Session (min)', fmt:v=>parseFloat(v).toFixed(1)},
+    {key:'last_purchase_days__mean', label:'Last Purchase', fmt:v=>parseFloat(v).toFixed(0)+' d'},
+    {key:'total_spend_12m__mean', label:'Spend 12m', fmt:v=>'$'+parseFloat(v).toFixed(0)},
+    {key:'converted__mean', label:'Conv. Rate', fmt:v=>(parseFloat(v)*100).toFixed(1)+'%'},
+    {key:'industry__top', label:'Top Industry', fmt:v=>String(v).split(';')[0].trim()},
+  ];
+  const available = preferredCols.filter(c => c.key in profiles[0]);
+
+  const head = document.getElementById('clusterTableHead');
+  head.innerHTML = '<tr>' + available.map(c => `<th>${c.label}</th>`).join('') + '</tr>';
+
+  const body = document.getElementById('clusterTableBody');
+  body.innerHTML = profiles.map(p =>
+    '<tr>' + available.map(c => {
+      const raw = p[c.key];
+      if (c.isCluster) return `<td><span class="cluster-tag">C-${raw}</span></td>`;
+      if (raw === undefined || raw === null || raw === '') return '<td>—</td>';
+      return `<td>${c.fmt ? c.fmt(raw) : raw}</td>`;
+    }).join('') + '</tr>'
+  ).join('');
+}
+
+// Kick off
+loadAll();
+</script>
+</body>
+</html>
