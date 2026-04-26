@@ -1,0 +1,53 @@
+{
+  "n_rows_in": 2000,
+  "n_rows_out": 2000,
+  "columns_in": [
+    "id",
+    "age",
+    "region",
+    "industry",
+    "company_size",
+    "acquisition_channel",
+    "visits_30d",
+    "emails_opened_30d",
+    "avg_session_min",
+    "support_tickets_90d",
+    "last_purchase_days",
+    "orders_12m",
+    "total_spend_12m",
+    "converted"
+  ],
+  "columns_out": [
+    "id",
+    "age",
+    "region",
+    "industry",
+    "company_size",
+    "acquisition_channel",
+    "visits_30d",
+    "emails_opened_30d",
+    "avg_session_min",
+    "support_tickets_90d",
+    "last_purchase_days",
+    "orders_12m",
+    "total_spend_12m",
+    "converted"
+  ],
+  "missing_by_col": {
+    "id": 0,
+    "age": 66,
+    "region": 0,
+    "industry": 58,
+    "company_size": 0,
+    "acquisition_channel": 0,
+    "visits_30d": 0,
+    "emails_opened_30d": 0,
+    "avg_session_min": 61,
+    "support_tickets_90d": 0,
+    "last_purchase_days": 0,
+    "orders_12m": 0,
+    "total_spend_12m": 0,
+    "converted": 0
+  },
+  "duplicates_removed": 0
+}
